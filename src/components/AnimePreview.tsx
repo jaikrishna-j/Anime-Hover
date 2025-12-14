@@ -26,7 +26,6 @@ const getResponsiveOffsets = (
   offsetX: number, 
   offsetY: number, 
   rotate: number, 
-  index: number,
   titlePosition?: { x: number; y: number } | null
 ) => {
   const { multiplier, width } = getResponsiveSize();
@@ -68,13 +67,13 @@ export const AnimePreview = ({
 }: AnimePreviewProps) => {
   const [responsiveSize, setResponsiveSize] = useState(getResponsiveSize());
   const [responsiveOffsets, setResponsiveOffsets] = useState(
-    getResponsiveOffsets(item.offsetX, item.offsetY, item.rotate, index, titlePosition)
+    getResponsiveOffsets(item.offsetX, item.offsetY, item.rotate, titlePosition)
   );
 
   useEffect(() => {
     const handleResize = () => {
       setResponsiveSize(getResponsiveSize());
-      setResponsiveOffsets(getResponsiveOffsets(item.offsetX, item.offsetY, item.rotate, index, titlePosition));
+      setResponsiveOffsets(getResponsiveOffsets(item.offsetX, item.offsetY, item.rotate, titlePosition));
     };
 
     window.addEventListener("resize", handleResize);
@@ -83,8 +82,8 @@ export const AnimePreview = ({
 
   // Update offsets when titlePosition changes
   useEffect(() => {
-    setResponsiveOffsets(getResponsiveOffsets(item.offsetX, item.offsetY, item.rotate, index, titlePosition));
-  }, [titlePosition, item.offsetX, item.offsetY, item.rotate, index]);
+    setResponsiveOffsets(getResponsiveOffsets(item.offsetX, item.offsetY, item.rotate, titlePosition));
+  }, [titlePosition, item.offsetX, item.offsetY, item.rotate]);
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
   const mouseMultiplier = isMobile ? 0 : (index === 1 ? 0.5 : 1);
