@@ -9,6 +9,7 @@ import "./App.css";
 import { Toaster } from "sonner";
 import Orb from "./components/Orb";
 import ProfileCard from "./components/ProfileCard";
+import BubbleMenu from "./components/BubbleMenu";
 
 const Page = () => {
   const [hoveredText, setHoveredText] = useState<string | null>(null);
@@ -16,9 +17,11 @@ const Page = () => {
   const [showMobileHint, setShowMobileHint] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
+  const [showBubbleMenu, setShowBubbleMenu] = useState(false);
   const mousePosition = useMousePosition();
   const titlesContainerRef = useRef<HTMLDivElement>(null);
   const titleRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const bubbleMenuRef = useRef<HTMLDivElement>(null);
 
   // Update title position when hoveredText changes (for mobile positioning)
   useEffect(() => {
@@ -85,6 +88,28 @@ const Page = () => {
       return () => document.removeEventListener("touchstart", handleClickOutside);
     }
   }, [hoveredText]);
+
+  // Close bubble menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (
+        showBubbleMenu &&
+        bubbleMenuRef.current &&
+        !bubbleMenuRef.current.contains(event.target as Node)
+      ) {
+        setShowBubbleMenu(false);
+      }
+    };
+
+    if (showBubbleMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener("touchstart", handleClickOutside);
+      };
+    }
+  }, [showBubbleMenu]);
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 sm:py-8 md:py-10 lg:py-12">
@@ -278,7 +303,7 @@ const Page = () => {
                   showUserInfo={true}
                   enableTilt={false}
                   enableMobileTilt={false}
-                  onContactClick={() => console.log('Contact clicked')}
+                  onContactClick={() => setShowBubbleMenu(true)}
                 />
                 {/* Close button */}
                 <button
@@ -303,6 +328,73 @@ const Page = () => {
                 </button>
               </div>
             </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Bubble Menu */}
+      <AnimatePresence>
+        {showBubbleMenu && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] cursor-pointer"
+              onClick={() => setShowBubbleMenu(false)}
+            />
+            
+            {/* Bubble Menu Container */}
+            <div
+              ref={bubbleMenuRef}
+              className="fixed inset-0 z-[1000] pointer-events-none"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <BubbleMenu
+                logo={<span style={{ fontWeight: 700 }}>JJ</span>}
+                items={[
+                  {
+                    label: 'Portfolio',
+                    href: 'https://jaikrishna-portfolio.vercel.app/',
+                    ariaLabel: 'Portfolio',
+                    rotation: -8,
+                    hoverStyles: { bgColor: '#3b82f6', textColor: '#ffffff' }
+                  },
+                  {
+                    label: 'GitHub',
+                    href: 'https://github.com/jaikrishna-j',
+                    ariaLabel: 'GitHub',
+                    rotation: 8,
+                    hoverStyles: { bgColor: '#10b981', textColor: '#ffffff' }
+                  },
+                  {
+                    label: 'LinkedIn',
+                    href: 'https://www.linkedin.com/in/jaikrishna-j/',
+                    ariaLabel: 'LinkedIn',
+                    rotation: 8,
+                    hoverStyles: { bgColor: '#f59e0b', textColor: '#ffffff' }
+                  },
+                  {
+                    label: 'Mail',
+                    href: 'mailto:jaikrishnajaisankar2005@gmail.com',
+                    ariaLabel: 'Mail',
+                    rotation: -8,
+                    hoverStyles: { bgColor: '#8b5cf6', textColor: '#ffffff' }
+                  }
+                ]}
+                menuAriaLabel="Toggle navigation"
+                menuBg="#ffffff"
+                menuContentColor="#111111"
+                useFixedPosition={true}
+                animationEase="back.out(1.5)"
+                animationDuration={0.5}
+                staggerDelay={0.12}
+                isOpen={showBubbleMenu}
+                onClose={() => setShowBubbleMenu(false)}
+              />
+            </div>
           </>
         )}
       </AnimatePresence>
