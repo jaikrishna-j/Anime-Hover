@@ -353,7 +353,6 @@ const Page = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <BubbleMenu
-                logo={<span style={{ fontWeight: 700 }}>JJ</span>}
                 items={[
                   {
                     label: 'Portfolio',
