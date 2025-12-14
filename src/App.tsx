@@ -16,6 +16,8 @@ const Page = () => {
   const [titlePosition, setTitlePosition] = useState<{ x: number; y: number } | null>(null);
   const [showMobileHint, setShowMobileHint] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isLaptop, setIsLaptop] = useState(false);
   const [showProfileCard, setShowProfileCard] = useState(false);
   const [showBubbleMenu, setShowBubbleMenu] = useState(false);
   const mousePosition = useMousePosition();
@@ -44,30 +46,36 @@ const Page = () => {
     }
   }, [hoveredText]);
 
-  // Check if mobile and handle mobile hint
+  // Check device type and handle hint message
   useEffect(() => {
-    const checkMobile = () => {
-      const mobile = window.innerWidth < 768;
+    const checkDevice = () => {
+      const width = window.innerWidth;
+      const mobile = width < 768;
+      const tablet = width >= 768 && width < 1024;
+      const laptop = width >= 1024;
+      
       setIsMobile(mobile);
-      if (!mobile) {
-        setShowMobileHint(false);
-      }
+      setIsTablet(tablet);
+      setIsLaptop(laptop);
+      
+      // Show hint for all devices
+      setShowMobileHint(true);
     };
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
   }, []);
 
-  // Auto-hide mobile hint after 3 seconds
+  // Auto-hide hint after 3 seconds
   useEffect(() => {
-    if (isMobile && showMobileHint) {
+    if (showMobileHint) {
       const timer = setTimeout(() => {
         setShowMobileHint(false);
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [isMobile, showMobileHint]);
+  }, [showMobileHint]);
 
   // Close previews when tapping outside on mobile
   useEffect(() => {
@@ -115,9 +123,9 @@ const Page = () => {
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 sm:py-8 md:py-10 lg:py-12">
       <Toaster position="top-center" richColors />
       
-      {/* Mobile Hint Message */}
+      {/* Device Hint Message */}
       <AnimatePresence>
-        {isMobile && showMobileHint && (
+        {showMobileHint && (
           <motion.div
             initial={{ 
               opacity: 0, 
@@ -150,7 +158,7 @@ const Page = () => {
                 ease: "easeInOut"
               }
             }}
-            className="fixed top-4 left-1/2 z-50 md:hidden"
+            className="fixed top-4 left-1/2 z-50"
           >
             <div className="relative">
               {/* Glowing background effect */}
@@ -206,12 +214,18 @@ const Page = () => {
                     }}
                     className="text-lg"
                   >
-                    👆
+                    {isMobile ? "👆" : isTablet ? "👆" : isLaptop ? "🖱️" : "🖱️"}
                   </motion.div>
                   
                   {/* Message text */}
-                  <p className="text-xs font-semibold text-white/95 tracking-wide">
-                    Tap any title to explore scenes
+                  <p className="text-xs sm:text-sm font-semibold text-white/95 tracking-wide">
+                    {isMobile 
+                      ? "Tap any title to explore scenes" 
+                      : isTablet 
+                      ? "Tap or hover any title to explore scenes"
+                      : isLaptop
+                      ? "Hover over any title to explore scenes"
+                      : "Hover over any title to explore scenes"}
                   </p>
                 </motion.div>
               </motion.div>
