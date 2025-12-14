@@ -7,12 +7,15 @@ import { ANIME_TITLES } from "./lib/constant";
 import { AnimeSceneEntry, data } from "./lib/data";
 import "./App.css";
 import { Toaster } from "sonner";
+import Orb from "./components/Orb";
+import ProfileCard from "./components/ProfileCard";
 
 const Page = () => {
   const [hoveredText, setHoveredText] = useState<string | null>(null);
   const [titlePosition, setTitlePosition] = useState<{ x: number; y: number } | null>(null);
   const [showMobileHint, setShowMobileHint] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [showProfileCard, setShowProfileCard] = useState(false);
   const mousePosition = useMousePosition();
   const titlesContainerRef = useRef<HTMLDivElement>(null);
   const titleRefs = useRef<Record<string, HTMLDivElement | null>>({});
@@ -224,6 +227,84 @@ const Page = () => {
               titlePosition={titlePosition}
             />
           ))}
+      </AnimatePresence>
+
+      {/* Orb at bottom center */}
+      <div 
+        className="fixed bottom-6 left-1/2 -translate-x-1/2 w-14 h-14 z-10 cursor-pointer"
+        onClick={() => setShowProfileCard(true)}
+      >
+        <Orb
+          hoverIntensity={0.5}
+          rotateOnHover={true}
+          hue={0}
+          forceHoverState={false}
+        />
+      </div>
+
+      {/* Profile Card Modal */}
+      <AnimatePresence>
+        {showProfileCard && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 cursor-pointer"
+              onClick={() => setShowProfileCard(false)}
+            />
+            
+            {/* Profile Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+            >
+              <div 
+                className="relative w-full max-w-2xl pointer-events-auto flex flex-col items-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ProfileCard
+                  name="Jaikrishna J"
+                  title="Full-Stack Developer"
+                  handle="jaicodes"
+                  status="Online"
+                  contactText="Contact Me"
+                  avatarUrl="/JaikrishnaProfile.png"
+                  showUserInfo={true}
+                  enableTilt={false}
+                  enableMobileTilt={false}
+                  onContactClick={() => console.log('Contact clicked')}
+                />
+                {/* Close button */}
+                <button
+                  onClick={() => setShowProfileCard(false)}
+                  className="mt-4 text-white/40 hover:text-white/60 transition-colors pointer-events-auto"
+                  aria-label="Close profile card"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
       </AnimatePresence>
     </div>
   );
