@@ -21,16 +21,5 @@ An interactive gallery featuring iconic scenes from my favorite anime series, bu
 
 I've been on a mission to make something fun with my favorite anime scenes. Most galleries felt static, so I wanted to create something that felt alive. Started simple with React and built up the interactions. When you hover over a title, it smoothly reveals iconic moments from that series. Added some mouse tracking magic with Framer Motion to make the scenes feel more dynamic, like they're floating in space. Sure, it may not be perfect on phones (desktop is where it shines), but I'm pretty happy with how the animations turned out!
 
-## 👤 Author
-
-**Jaikrishna J**
-
-- GitHub: [@jaikrishna-j](https://github.com/jaikrishna-j)
-- Repository: [Anime-Hover](https://github.com/jaikrishna-j/Anime-Hover)
-
----
-
-*This project was created and is maintained by Jaikrishna J.* 
-
 
 
