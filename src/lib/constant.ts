@@ -16,9 +16,11 @@ export const ANIMATION_CONFIG = {
 } as const;
 
 export const ANIME_TITLES: AnimeTitle[] = [
-  { id: "demonSlayer", displayName: "demon slayer" },
-  { id: "silentVoice", displayName: "a silent voice" },
+  { id: "onePiece", displayName: "one piece" },
+  { id: "bleach", displayName: "bleach" },
+  { id: "dragonBall", displayName: "dragon ball" },
+  { id: "soloLeveling", displayName: "solo leveling" },
+  { id: "blackClover", displayName: "black clover" },
   { id: "attackOnTitan", displayName: "attack on titan" },
-  { id: "spiritedAway", displayName: "spirited away" },
-  { id: "bunnyGirl", displayName: "Rascal Does Not Dream" },
+  { id: "demonSlayer", displayName: "demon slayer" },
 ];

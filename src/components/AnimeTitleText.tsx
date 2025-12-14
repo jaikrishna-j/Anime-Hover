@@ -48,7 +48,7 @@ export const AnimeTitleText = forwardRef<HTMLDivElement, AnimeTitleTextProps>(({
       }}
     >
       <motion.span
-        className="block whitespace-nowrap text-3xl font-black uppercase tracking-tight text-zinc-200 transition-all duration-300 hover:text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl"
+        className="block whitespace-nowrap text-2xl font-black uppercase tracking-tight text-zinc-200 transition-all duration-300 hover:text-white sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"
         whileHover={{ textShadow: "0 0 30px rgba(255,255,255,0.5)" }}
       >
         {title.displayName}

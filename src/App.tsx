@@ -57,13 +57,13 @@ const Page = () => {
   }, [hoveredText]);
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-8 sm:py-12 md:py-16 lg:py-20">
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 py-6 sm:py-8 md:py-10 lg:py-12">
       <Toaster position="top-center" richColors />
       
       {/* Anime Titles */}
       <div 
         ref={titlesContainerRef}
-        className="flex w-full max-w-5xl flex-col items-center justify-center gap-3 sm:gap-4 md:gap-5 lg:gap-6"
+        className="flex w-full max-w-5xl flex-col items-center justify-center gap-2 sm:gap-3 md:gap-3.5 lg:gap-4"
       >
         {ANIME_TITLES.map((title) => (
           <AnimeTitleText
